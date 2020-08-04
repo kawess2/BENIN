@@ -10,6 +10,8 @@ BENIN has been applied to:
 
 
 If you used BENIN for your research, please cite:
+
 Wonkap, S. K., & Butler, G. (2020). BENIN: Biologically enhanced network inference. Journal of Bioinformatics and Computational Biology, 18(03), 2040007.
-APA	
+APA
+	
 Kamgnia, S., & Butler, G. (2019, December). BENIN: combining knockout data with time series gene expression data for the gene regulatory network inference. In Proceedings of the Tenth International Conference on Computational Systems-Biology and Bioinformatics (pp. 1-9).  
