@@ -1,6 +1,6 @@
 #!/usr/bin/env Rscript
-setwd("src")
-source("script_DREAM_Network_inference_mod.R")
+setwd("/Volumes/Seagate\ Backup\ Plus\ Drive/PhD/BENIN_git")
+source("dreamfourcode/script_DREAM_Network_inference_mod.R")
 
 args = commandArgs(trailingOnly=TRUE)
 if (length(args)==0) {

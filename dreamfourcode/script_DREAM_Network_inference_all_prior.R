@@ -35,8 +35,8 @@ library(data.table)
 ### 
 source("R/utile.R")
 source("R/benin.R")
-source("R/bootpracs.q")
-source("R/bootfuns.q")
+source("src/bootpracs.q")
+source("src/bootfuns.q")
 
 inferencenetworkonDREAMNetwork<-function(file,network,lambda,alphaenet,beta,lambdamin,lambdamax,namefile_exprdata,namefile_ref_network,namefileglobalres,
                                          namefilerecNetwork,namefilematpval, nbBoobstrap=1000,lmean=10,nbfolds=10,sizenetwork = 100)

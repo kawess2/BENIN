@@ -1,0 +1,17 @@
+	FUTURE CHANGES
+
+SIGNIFICANT USER-VISIBLE CHANGES
+
+NEW FEATURES
+o    Modèle de segmentation et son interface avec les objets MRIaggr
+o    Methode de segmentation interactive ou l on indique un grain et on fait partir un GR
+o    Calcul de la courbure pour ameliorer le lissage du masque
+o    Mettre a jour la description du package
+
+BUG FIXES
+
+INTERNAL CHANGES
+o    Permettre d'évaluer selon plusieurs initializations le modèle de segmentation. Paralléliser. Fournir les résultats avec un IC.
+O Verifier la qualite du modele de melange par simulations
+
+!!! gérer les NA dans le multiplot si contrast multidimensionnel

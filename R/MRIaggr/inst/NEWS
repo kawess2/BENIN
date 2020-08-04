@@ -1,0 +1,73 @@
+########################################
+	CHANGES IN VERSION 1.1.4 and 1.1.5
+########################################
+
+BUG FIXES
+o    fix a bug in df2array
+o    fix a bug in calcGroupsW_hpp
+
+########################################
+	CHANGES IN VERSION 1.1.3 and 1.1.4
+########################################
+
+NEW FEATURES
+o    New functions for spatial analysis: simulation and estimation of the parameters from a Markov Random Field calcPotts, calcPottsParameter, simulPotts
+
+INTERNAL CHANGES
+o    valid functions for checking the validity of the arguments of the functions
+
+########################################
+	CHANGES IN VERSION 1.1.2 and 1.1.3
+########################################
+
+NEW FEATURES
+o    New function (multipar) enable to specify the default settings for the multiplot method.
+o    New function (calcSigmaGR) that assesses the quality of the clustering obtained by the Growing Region algorithm (calcGR)
+o    calcAUPRC can now gives a confidence interval associated to the punctual estimation of the AUPRC.
+     Integration can now be performed using the integral function of the pragma package.
+
+BUG FIXES
+o    fix a bug in pointsOutline
+o    fix several bugs in multiplot when displaying the legend (legendMRI)
+
+INTERNAL CHANGES
+o    rename arguments : as.logical -> numeric2logical, as.numeric -> character2numeric, 
+                        angle_test -> angle.test
+
+########################################
+	CHANGES IN VERSION 1.1 and 1.1.2
+########################################
+
+SIGNIFICANT USER-VISIBLE CHANGES
+o  affect methods have been renamed in alloc methods.
+o  calcContralateral has been renamed calcContralateral.
+o  calcHemisphere method has a new optimization step using Nelder-Mead method.
+o  voxelDim attribute has been renamed fieldDim.
+o  voxelSize attribute has been renamed voxelDim.
+
+INTERNAL CHANGES
+o    Optimization of the calcHemisphere method.
+
+########################################
+	CHANGES IN VERSION 1.0 and 1.1
+########################################
+
+SIGNIFICANT USER-VISIBLE CHANGES
+o  Arugments distband of calcW have been renamed in range.
+o  Arugments distband of calcRegionalContrast, calcThresholdMRIaggr and calcThresholdMRIaggr have been renamed in W.range.
+o  Arugments distband_EDK and power_EDK of calcRegionalContrast, calcThresholdMRIaggr and calcThresholdMRIaggr have been renamed in distband and range.
+o  Description of the output of the readMRI function has been corrected in the .Rd file.
+
+NEW FEATURES
+o  Function readMRI to import imaging data files.
+o  Function writeMRI and writeMRIaggr to export R objects into imaging data files.
+
+BUG FIXES
+o    Fix an issue with summary.
+o    Fix an issue with calcFilter.
+
+INTERNAL CHANGES
+o    Minor modification of the R code of functions calcGroupMask, calcRegionalContrast, calcThresholdMRIaggr.
+o    Optimization of the calcHemisphere method.
+o    Slots names of the MRIaggr object have been modified
+

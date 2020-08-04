@@ -1,0 +1,113 @@
+useDynLib(MRIaggr)
+
+# import
+importFrom("graphics", "abline", "axis", "box", "boxplot", "hist", "image", "layout", "legend", "locator", "matplot", "mtext", "par", "plot", "points", "segments", "text", "title")
+importFrom("grDevices", "cm.colors", "dev.new", "dev.off", "graphics.off", "gray.colors", "grey.colors", "heat.colors", "pdf", "png", "postscript", "rainbow", "terrain.colors", "topo.colors", "svg")
+importFrom("Matrix", "drop0", "Matrix", "rowSums", "sparseMatrix")
+import("methods")
+# importFrom("mritc", "initOtsu", "makeMRIspatial", "mritc.bayes")
+importFrom("oro.dicom", "readDICOMFile")
+import("oro.nifti")
+# importFrom("oro.nifti", "convert.units", "readANALYSE", "readNIfTI", "writeANALYSE", "writeNIfTI")
+importFrom("RANN", "nn2")
+import("Rcpp")
+importFrom("ROCR", "prediction", "performance")
+importFrom("spam", "as.dgCMatrix.spam", "colSums", "rowSums", "t")  
+importFrom("stats", "approxfun", "cor", "dbinom", "density", "dnorm", "dunif", "filter", "integrate", "kmeans", "mad", "median", "na.omit", "optim", "pnorm", "qnorm", "quantile", "rexp", "rmultinom", "rnorm", "sd", "weighted.mean")
+importFrom("stats4", "summary")
+importFrom("utils", "adist", "head", "str", "tail")
+  
+# export fonctions
+export(
+	"constCarto3D",
+	"constMRIaggr",
+	"constLatex",
+	"array2df",
+	"Carto3D2MRIaggr",
+	"df2array",
+	"calcAUPRC",
+	"calcBlockW",
+	"calcGR",
+	"calcGroupsCoords",
+	"calcGroupsW",
+	"calcMultiPotential",
+	"calcPotts",
+	"calcPottsParameter",
+	"calcSigmaGR",
+	"calcThreshold",	
+	"initFilter",
+	"initNeighborhood",
+	"outline",
+	"plotSigmaGR",
+	"optionsMRIaggr",
+	"pointsOutline",
+	"readMRI",
+	"rhoMF",
+	"rhoLvfree",
+	"simulPotts",
+	"writeMRI"
+	)
+
+# export classes
+exportClasses(
+	"MRIaggr",
+	"Carto3D"
+	)
+	
+# export Methodes
+exportMethods(
+	"allocContrast<-",
+	"allocClinic<-",
+	"allocDescStats<-",
+	"allocHemisphere<-",
+	"allocNormalization<-",
+	"allocTable<-",
+	"allocW<-",
+	"calcBrainMask",
+	"calcContralateral",
+	"calcDistTissues",
+	"calcDistMask",
+	"calcFilter",
+	"calcGroupsMask",
+	"calcHemisphere",	
+	"calcNormalization",
+	"calcRegionalContrast",
+	"calcROCthreshold",
+	"calcSmoothMask",
+	"calcTableHypoReperf",
+	"calcTableLesion",
+	"calcThresholdMRIaggr",
+	"calcTissueType",
+	"calcW",
+	"constCompressMRIaggr",
+	"constReduceMRIaggr",
+	"boxplotMask",
+	"heatmapMRIaggr",
+	"multiplot",
+	"outlineMRIaggr",
+	"plotDistClass",
+	"pointsHemisphere",
+	"plotLesion3D",
+	"plotTableLesion",
+	"selectContrast",
+	"selectCoords",
+	"selectClinic",
+	"selectDefault_value",
+	"selectDescStats",
+	"selectHemispheres",
+	"selectHistory",
+	"selectIdentifier",
+	"selectMidplane",
+	"selectN",
+	"selectNormalization",
+	"selectParameter",
+	"selectTable",
+	"selectParameter",
+	"selectFieldDim",
+	"selectVoxelDim",
+	"selectW",
+	"summary",
+	"supprContrast<-",
+	"supprDescStats<-",
+	"writeMRIaggr"
+)

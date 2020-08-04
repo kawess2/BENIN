@@ -1,0 +1,3 @@
+ExtractNifti     Read and transform nifti data to MRIaggr objects
+preProcessing      preprocess the MRIaggr object
+Analysis       Example of statistical analysis of MRI images

@@ -24,8 +24,8 @@ library(parallel)
 source("dreamfourcode/benin_hyp_param.R")
 source("R/utile.R")
 source("R/benin.R")
-source("R/bootpracs.q")
-source("R/bootfuns.q")
+source("src/bootpracs.q")
+source("src/bootfuns.q")
 
 
 inferencenetworkonDREAMNetwork<-function(nbBoobstrap,exponent,file,network,lambda,alphaenet,beta,lambdamin,lambdamax,namefile_exprdata,namefile_ref_network,

@@ -20,11 +20,11 @@ library(nVennR)
 #home="/Users/Stephanie/Downloads/GRN_inference_temp"
 home= "/Volumes/Seagate\ Backup\ Plus\ Drive/PhD/BENIN_git/"
 setwd(home)
-source('R/Functions_Valid.R')
+source("R/MRIaggr/Functions_Valid.R")
 source("R/utile.R")
 source("R/benin.R")
-source("R/bootpracs.q")
-source("R/bootfuns.q")
+source("src/bootpracs.q")
+source("src/bootfuns.q")
 
 #loding goldstandard network
 namefilegs="../data/data_human/final_data_hum_reg_network/Hela_data/final_human_goldstandard.txt"

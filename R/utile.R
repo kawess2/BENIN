@@ -227,4 +227,26 @@ modcalcAUPRC <- function(x, y, subdivisions = 10000, performance = NULL, ci = TR
   ))
   
 }
+writemotif<-function(indx,allmotifsfilename,matallmotif)
+{
+  currentmotifID=matallmotif[indx,]$Motif_ID
+  #print(currentmotifID)
+  currentmotiffilename=paste0("../data/data_human/Homo_sapiens_2019_05_23_10-17_am/pwms_all_motifs/",currentmotifID,".txt")
+  head=paste0("\nTF\t",paste0(matallmotif[indx,]$TF_ID,"\n"),"TF Name\t",paste0(matallmotif[indx,]$TF_Name,"\n"),"Gene\t",
+              paste0("","\n"), "Motif\t",paste0(matallmotif[indx,]$Motif_ID,"\n"),"Family\t",paste0(matallmotif[indx,]$Family_Name,"\n"),
+              "Species\t",paste0(matallmotif[indx,]$TF_Species,"\n"))
+  #print(currentmotiffilename)
+  currentmotif=read.table(currentmotiffilename,header = F, sep = "\t",stringsAsFactors = F)
+ 
+  #print(currentmotif)
+  print(head)
+  lenmotif=dim(currentmotif)[1]
+  if (lenmotif>1)
+  {
+    write(head,allmotifsfilename,append = T)
+    write.table(currentmotif,allmotifsfilename,append = T, quote=F, sep="\t", col.names = F,row.names = F)
+  }
+  
+  
+}
 

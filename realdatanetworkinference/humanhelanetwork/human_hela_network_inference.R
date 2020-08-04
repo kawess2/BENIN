@@ -1,15 +1,4 @@
 #setwd("/Users/stephanie_admin/Documents/GRN_inference/src/")
-# library(tidyverse,lib.loc = "./library")
-# library(data.table,lib.loc = "./library")
-# library(seqinr,lib.loc = "./library")
-# library(STRINGdb,lib.loc = "./library")
-# library(GOSemSim,lib.loc = "./library")
-# library(dplyr,lib.loc = "./library")
-# library(reshape2,lib.loc = "./library")
-source("bootfuns.q")
-source("bootpracs.q")
-source("benin2.R")
-source("list2df.R")
 library(glmnet)
 library(xts)
 library(boot)
@@ -41,47 +30,14 @@ library(GOSemSim)
 library(org.Hs.eg.db)
 library(readr)
 
+source("R/bootfuns.q")
+source("R/bootpracs.q")
+source("R/benin.R")
+source("R/utile.R")
 
 
-######### Utils functions
-writemotif<-function(indx,allmotifsfilename,matallmotif)
-{
-  currentmotifID=matallmotif[indx,]$Motif_ID
-  #print(currentmotifID)
-  currentmotiffilename=paste0("../data/data_human/Homo_sapiens_2019_05_23_10-17_am/pwms_all_motifs/",currentmotifID,".txt")
-  head=paste0("\nTF\t",paste0(matallmotif[indx,]$TF_ID,"\n"),"TF Name\t",paste0(matallmotif[indx,]$TF_Name,"\n"),"Gene\t",
-              paste0("","\n"), "Motif\t",paste0(matallmotif[indx,]$Motif_ID,"\n"),"Family\t",paste0(matallmotif[indx,]$Family_Name,"\n"), 
-              "Species\t",paste0(matallmotif[indx,]$TF_Species,"\n"))
-  #print(currentmotiffilename)
-  currentmotif=read.table(currentmotiffilename,header = F, sep = "\t",stringsAsFactors = F)
- 
-  #print(currentmotif)
-  print(head)
-  lenmotif=dim(currentmotif)[1]
-  if (lenmotif>1)
-  {
-    write(head,allmotifsfilename,append = T)
-    write.table(currentmotif,allmotifsfilename,append = T, quote=F, sep="\t", col.names = F,row.names = F)
-  }
-  
-  
-}
 
-savedata<- function(data,file, colnames=TRUE, rownames=TRUE,sep="\t",quote=FALSE,append=FALSE)
-{
-  write.table(data,file=file,sep=sep,append = append
-              ,col.names=colnames,row.names = rownames,quote=FALSE)
-}
-proba<- function(beta,pval){
-  proba2<- function(lambda){
-    (lambda*exp(-lambda*pval)*beta)/((lambda*exp(-lambda*pval)*beta)+
-                                       ((1-exp(-lambda))*(1-beta)))
-  }
-  return(proba2)
-}
-integral<- function(beta,pval,lambdamin,lambdamax){
-  (integrate(proba(beta,pval),lower =lambdamin,upper = lambdamax)$value)/(lambdamax-lambdamin)
-}
+
 ####################################
 #We first analyze the expression data for clustering to get the module network
 
@@ -548,168 +504,3 @@ save(resbenin,file=filedatares)
   print(fileres)
   write.table(rescluster,fileres,col.names = T,row.names = F,quote = F,sep = "\t")
 }
-# hsGO<-godata("org.Hs.eg.db",keytype="SYMBOL",ont = "BP",computeIC = TRUE)
-# 
-# semanticsim_in_cluster<-mgeneSim(genes,semData = hsGO,measure ="Rel",combine="BMA" )
-# diag(semanticsim_in_cluster)<-0
-# funcsimfeature<-reshape2::melt(semanticsim_in_cluster)
-# colnames(funcsimfeature)<-c("TF","TG","semsim")
-# funcsimfeature<-subset(funcsimfeature,TF%in%potentialTFname &TG%in%genesincluster& TF!=TG)
-# #copy_semanticsim<-semanticsim_in_cluster
-# 
-# #first feature is from the motif binding
-# 
-# rescluster<-list2df(resbein)
-# rescluster$TF<-as.character(rescluster$TF)
-# rescluster$TG<-as.character(rescluster$TG)
-# rescluster<-subset(rescluster,TF!=TG)
-# rescluster<-rescluster[order(rescluster,decreasing = T),]
-# ## Writing res in file
-# tostringalphaenet=toString(alphaenet)
-# tostringalphaenet=gsub(".","",tostringalphaenet,fixed=T)
-# tostringexponent=toString(exponent)
-# tostringexponent=gsub(".","",tostringexponent,fixed=T)
-# fileres=paste0("../res_in_sillico/res_human/res_hela_network/cluster_",clusterid,"/reshelanetwork_with_",prior,
-#                "_nbbootstrap_",nbBootstrap,"_alphaenet_",tostringalphaenet,"_exponent_",tostringexponent,"_helanetwork_",clusterid,".txt")
-# write.table(rescluster,fileres,col.names = T,row.names = F,quote = F,sep = "\t")
-# 
-# 
-# 
-# 
-# 
-# 
-# #Second feature is from the functional association
-# 
-# 
-# 
-# 
-# #Second feature is from the functional association
-# 
-# ######Option 2
-# file_gs_hela<-"../data/data_human/final_data_hum_reg_network/Hela_data/pathwaynet-functional_relationship.txt"
-# 
-# hela_gs_network2<-fread(file=file_gs_hela,header = F,quote="",sep="\t",stringsAsFactors = F,col.names=c("From","To","W"),
-#                         colClasses = c("character","character","numeric"))
-# hela_gs_network2<-subset(hela_gs_network2,hela_gs_network2$From%in%mapping_tf_entrez_name$ENTREZID&hela_gs_network2$To%in%mapping_entrez_name$ENTREZID)
-# 
-# 
-# ###### We get information from stringDB
-# 
-# string_db <- STRINGdb$new( version="10", species=9606,score_threshold=0, input_directory="" )
-# gene_cell_cycle_hela_string_db_id<-string_db$map( unique(sub_gene_cell_cycle_hela$Symbol), "Symbol", removeUnmappedRows = TRUE )
-# interaction_string_db<-string_db$get_interactions( gene_cell_cycle_hela_string_db_id$STRING_id )
-# fileproteinsaction<-paste0("/Users/stephanie_admin/Documents/GRN_inference/data/data_human/final_data_hum_reg_network/",
-#                            "Hela_data/9606.protein.actions.v11.0.txt")
-# action_link_string_db<-read.table(fileproteinsaction,header = T,stringsAsFactors = F,sep = "\t")
-# 
-# sub_action_link_string_db<-subset(action_link_string_db,action_link_string_db$mode=="binding"|| action_link_string_db$a_is_acting=="t")
-# string_id_TF<-subset(gene_cell_cycle_hela_string_db_id,gene_cell_cycle_hela_string_db_id$Symbol%in%potentialTFname)$STRING_id
-# sub_interaction_string_db<-subset(interaction_string_db,interaction_string_db$from%in%string_id_TF)
-# sub_interaction_string_db$textmining_feature<-sub_interaction_string_db$textmining
-# sub_interaction_string_db<-sub_interaction_string_db[order(sub_interaction_string_db$textmining_feature,decreasing = T),]
-# sub_interaction_string_db[sub_interaction_string_db$textmining_feature<400,"textmining_feature"]<-0
-# sub_interaction_string_db[sub_interaction_string_db$textmining_feature>=400,"textmining_feature"]<-1
-# 
-# 
-# 
-# 
-# 
-# 
-# row.names(mapping_genes_to_ens_transcript_uscs)<-mapping_genes_to_ens_transcript_uscs$V1
-# idincluster<-subset(stringdbid_diffexprs_gene,stringdbid_diffexprs_gene$STRING_id%in%do.call(c, clustersList2[4:5]))$gene
-# #refseqid<-subset(sub_gene_name_conversion,sub_gene_name_conversion$From%in%idincluster)$To
-# #refseqid<-subset(mapped_diffexprs_genes$refseq
-# ensemblid<-unique(subset(mapped_diffexprs_genes,((mapped_diffexprs_genes$genename%in%idincluster)|(mapped_diffexprs_genes$genename2%in%idincluster)))$ensblID)
-# ensemblid<-ensemblid[!is.na(ensemblid)]
-# #mypromoter[grepl(refseqid,names(mypromoter))]
-# #lapply(refseqid,FUN=function(pattern,x){unlist(x[grepl(pattern,names(x),fixed=T)])},x=mypromoter)
-# #idseqincluster=unlist(lapply(ensemblid,FUN=function(pattern,x)x[grepl(pattern,x)],x=names(mypromoter)))
-# #idseqincluster=unlist(lapply(ensemblid,FUN=function(pattern,x)x[grepl(pattern,x)],x=names(mypromoter)))
-# 
-# seqincluster=mypromoter[ensemblid]
-# namesseq<-names(seqincluster)
-# write.fasta(seqincluster,namesseq,"/Users/stephanie_admin/Documents/GRN_inference/data/data_human/final_data_hum_reg_network/cluster_promoter_seq/cluster2-4.fa")
-# 
-# 
-# 
-# ## TFBS motif processing to match meme input spec
-# #we analize the motif file to transform cis-BP motif to meme file in order to run FIMO for motif scanning
-# #1) WE get the description of the motif
-# 
-# description_motiffile=paste0("/Users/stephanie_admin/Documents/GRN_inference/data/data_human/final_data_hum_reg_network/Homo_sapiens_2019_11_20_4-09_pm/","TF_Information_all_motifs.txt")
-# description_motif=read.table(file=description_motiffile,header = T, sep="\t",stringsAsFactors = F,fill = T)
-# # 
-# # 2) First we get the list of motifs file
-# mymotifsfilelist=list.files("/Users/stephanie_admin/Documents/GRN_inference/data/data_human/final_data_hum_reg_network/Homo_sapiens_2019_11_20_4-09_pm/pwms_all_motifs/",no.. = T)
-# listmotifid=lapply(mymotifsfilelist,FUN=function(x){gsub('.txt','',x)})
-# #3 ) Get the the description of of the list of motif in the directory and which are from Transfac, chip-seq, chip-chip
-# #sub_description_motif=subset(description_motif,(Motif_ID%in%listmotifid & Motif_Type %in%c("Misc","Transfac","ChIP-seq","ChIP-chip")))
-# sub_description_motif<-subset(description_motif,Motif_ID !=".")
-# #We finaly get #numbers of TF
-# nbtfwmotif<-length(unique (sub_description_motif$TF_Name))
-# # For a total of #motif
-# nbmotif<-dim(sub_description_motif)[1]
-# #We need to transform the motif in meme format
-# allmotifsfilename="../data/data_human/final_data_hum_reg_network/Homo_sapiens_2019_11_20_4-09_pm/allmofifscisbp.txt"
-# lapply(seq(1,nbmotif),writemotif, allmotifsfilename=allmotifsfilename,matallmotif=sub_description_motif)
-# cisbpmotifs<-read_cisbp(allmotifsfilename)
-# memecisbpmotifsfilename="../data/data_human/final_data_hum_reg_network/Homo_sapiens_2019_11_20_4-09_pm/Homo_sapiens.meme"
-# write_meme(cisbpmotifs,memecisbpmotifsfilename,overwrite = T)
-# # 
-# # 
-# # 
-# # ##### TS series expression data preprocessing
-# # # We read the time series expression data 
-# # human_exprdatafile="../data/data_human/time_series/hela_ts_data.txt"
-# # human_exprdata=read.table(file =human_exprdatafile , sep = '\t', header = TRUE,stringsAsFactors = F,fill=T,quote="")
-# # # filtering the expression data 
-# # human_exprdatafinal=human_exprdata[,-(2:12)]
-# # geneid=unique(human_exprdata[,1])
-# # genenames=unique(human_exprdata[,2])
-# # #Removing unecessary columns. In fact they added white space between experiments to separate the 5 experiments. We want to remove those
-# # # emty columns so keep only the column that have at leat one value
-# # human_exprdatafinal=human_exprdatafinal[, colSums(is.na(human_exprdatafinal)) != nrow(human_exprdatafinal)]
-# # rownames(human_exprdatafinal)<-human_exprdata$UID
-# # human_exprdatafinal=human_exprdatafinal[,-1]
-# # human_exprdatafinal=t(human_exprdatafinal)
-# # # Here we are getting the mapping of the gene ID to create a final mapping that will be used after
-# # BiocManager::install(c("Biobase","GEOquery"))
-# library(GEOquery)
-# library(Biobase)
-# # GSE3497<-getGEO("GSE3497",destdir = "../data/data_human/time_series",GSEMatrix = T,AnnotGPL = T,getGPL = T)
-# # 
-# # gpl2937<-getGEO(filename="../data/time_series/GPL2937.soft")data_human
-# # exprs(gse3497$`GSE3497-GPL2937_series_matrix.txt.gz`)
-# # annottable<-Table(gpl2937)
-# # #featureNames(GSE3497$`GSE3497-GPL2937_series_matrix.txt.gz`)
-# # annottable=subset(annottable,ID %in% featureNames(GSE3497$`GSE3497-GPL2937_series_matrix.txt.gz`))
-# # annottable[,paste0("GB_LIST_", 1:4)]=str_split_fixed(test$GB_LIST, ",", 4)
-# # annottable=annottable[order(annottable$ID,decreasing = F),]
-# # row.names(tsserieshuman)<-annottable$GB_LIST_1
-# # subannottable=annottable[,c("SPOT_ID","GB_LIST_1")]
-# # annot_human_exprdatafinal<-inner_join(subannottable,human_exprdatafinal,by=c("SPOT_ID"="UID") )
-# # mappingesttounigene<-read.csv(file="../data/data_human/time_series/bioDBnet_estacc_to_unigene.txt",sep = "\t",header = T,stringsAsFactors = F)
-# # mappingunigenetoens<-read.csv(file="../data/data_human/time_series/unigene_to_ens_ID.txt",sep = "\t",header = T,stringsAsFactors = F)
-# # mappingunigenetoens["UID"]<-tolower(mappingunigenetoens$From)
-# # mappingesttounigene["UID"]<-tolower(mappingesttounigene$UniGene.ID)
-# # allmapping<-inner_join(mappingunigenetoens,mappingesttounigene,by="UID" )
-# # allmapping<-inner_join(allmapping,subannottable,by=c("EST.Accession"="GB_LIST_1"))
-# # allmapping<-allmapping[,-8]
-# # colnames(allmapping)<-c("Unigene_ID","ENS_Id","Species","Gene.Name","UID","EST.Accession","UniGene.ID","SPOT_ID")
-# # write.table(allmapping, file="../data/data_human/time_series/allmapping.txt",row.names = F,quote=F,sep= "\t")
-# # annot_human_exprdatafinal_all<-inner_join(annot_human_exprdatafinal,allmapping[,c("EST.Accession","ENS_Id")],by=c("GB_LIST_1"="EST.Accession") )
-# # annot_human_exprdata_unique_id=aggregate(annot_human_exprdatafinal_all[,3:117],by=list(annot_human_exprdatafinal_all$ENS_Id),FUN = mean,start=3,end=116)
-# # annot_human_exprdata_unique_id<-annot_human_exprdata_unique_id[,-115]
-# # write.table(annot_human_exprdata_unique_id, file="../data/data_human/time_series/ts_data_human_unique_ens_id.txt",row.names = F,quote=F,sep= "\t")
-# 
-# #We load the time series expression data 
-# annot_human_exprdata_unique_id<-read.csv(file="../data/data_human/time_series/ts_data_human_unique_ens_id.txt",row.names = F,quote=F,
-#                                          sep= "\t",stringsAsFactors = F)
-# # Preparing for clustering. We will use different clustering and combine their idea to get an ensemble clustering 
-# final_annot_human_exprdata_unique_id<-knnImputation(annot_human_exprdata_unique_id,k=12)
-# #We load functional annotation data 
-# funcoup<-read.table("../data/data_human/funcoup/FC4.0_H.sapiens_full",sep = "\t", stringsAsFactors = F)
-# mustLink<-subset(funcoup,X0.PFC>=0.5)
-# cantLink<-subset(funcoup,X0.PFC<0.5)
-# pred = mpckm(final_annot_human_exprdata_unique_id, k, mustLink, cantLink)
-# lapply(1:11,FUN=applyfile,lmean=10,alphaenet= 0.7, network=5,beta=0.5,nbfolds=10,sizenetwork=100,nbBoobstrap=1000,lambdamin=1,lambdamax=10000,lambda=20)
